@@ -58,22 +58,31 @@ app.get("/students/filter", (req, res) => {
 });
 
 // temperatures/convert
-function convertCelsiusToFahrenheit(temperatures, covertTemp) {
+
+function convertCelsiusToFahrenheit(temperatures) {
   let result = [];
   for (let i = 0; i < temperatures.length; i++) {
-    if (covertTemp === "C") {
-      result.push((temperatures[i] * 9) / 5 + 32);
-    } else {
-      result.push(((temperatures[i] - 32) * 5) / 9);
-    }
+    result.push((temperatures[i] * 9) / 5 + 32);
   }
   return result;
 }
 app.get("/temperatures/convert", (req, res) => {
-  let covertTemp = req.query.covertTemp;
-  let result = convertCelsiusToFahrenheit(temperatures, covertTemp);
-  res.json({ temperatures: result });
+  let result = convertCelsiusToFahrenheit(temperatures);
+  res.json({ convertedTemperatures: result });
 });
+
+// function convertCelsiusToFahrenheit(temperatures) {
+//   let convertedTemperatures = [];
+//   for (let i = 0; i < temperatures.length; i++) {
+//     convertedTemperatures.push((temperatures[i] * 9) / 5 + 32);
+//   }
+//   return convertedTemperatures;
+// }
+// app.get("/temperatures/convert", (req, res) => {
+//   let temperatures = req.query.temperatures.split(",");
+//   let result = convertCelsiusToFahrenheit(temperatures);
+//   res.json({ convertedTemperatures: result });
+// });
 
 // students/average-score
 function calculateAverageScore(student_scores) {
@@ -91,7 +100,7 @@ app.get("/students/average-score", (req, res) => {
 
 // sentence/count-words
 function countWords(sentenses) {
-  return sentences.split(" ").length;
+  return sentenses.split(" ").length;
 }
 app.get("/sentence/count-words", (req, res) => {
   let result = countWords(sentences);
